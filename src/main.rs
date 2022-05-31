@@ -163,12 +163,12 @@ fn parse_argv<'a> (command: &str) -> Vec<String> {
     real_argv
 }
 
-trait PathMacher {
+trait PathMatcher {
     fn match_wild_card(&self) -> Vec<String>;
     fn unfold(&self) -> String;
 }
 
-impl PathMacher for str {
+impl PathMatcher for str {
     fn match_wild_card(&self) -> Vec<String> {
         let mut res: Vec<String> = Vec::new();
         for path in glob(self).unwrap() {
@@ -323,6 +323,7 @@ impl Wrapper for Command {
 fn chdir(argv: &[String]) {
     if argv.len() > 2 {
         eprintln!("shell: cd: too many arguments");
+        return;
     }
     let path = if argv.len() == 1 {
         home_dir().unwrap()
